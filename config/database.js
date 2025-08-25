@@ -16,6 +16,7 @@ const dbConnect = () => {
     });
 };
 
+// to initiate the db
 const initDB = async () => {
   await Listing.deleteMany({});
   await Listing.insertMany(initData.data);
