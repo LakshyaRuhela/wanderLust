@@ -4,8 +4,20 @@ const mongoose = require("mongoose");
 require("dotenv").config({ quiet: true });
 PORT = 3000 || process.env.PORT;
 const Listing = require("./models/listing");
+const path = require("path");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+
+// mounting route
+const listing = require("./routes/listing");
+app.use("/wanderlust", listing);
+app.use("/", listing);
 // default route
+
 app.get("/", (req, res) => {
   res.send("Hi , I am Root path");
 });
