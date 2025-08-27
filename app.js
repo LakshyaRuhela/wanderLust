@@ -5,12 +5,13 @@ require("dotenv").config({ quiet: true });
 PORT = 3000 || process.env.PORT;
 const Listing = require("./models/listing");
 const path = require("path");
+const methodOverride = require("method-override");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
 
 // mounting route
 const listing = require("./routes/listing");
