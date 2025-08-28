@@ -6,12 +6,15 @@ PORT = 3000 || process.env.PORT;
 const Listing = require("./models/listing");
 const path = require("path");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
 // mounting route
 const listing = require("./routes/listing");
@@ -20,7 +23,7 @@ app.use("/", listing);
 // default route
 
 app.get("/", (req, res) => {
-  res.send("Hi , I am Root path");
+  res.render("/wandrlust");
 });
 // db connection
 const dbConnect = require("./config/database");
