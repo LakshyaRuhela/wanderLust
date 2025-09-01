@@ -3,7 +3,7 @@
   <div class="col-8 offset-2">
     <br /><br />
     <h3>Create a New Listing</h3>
-    <form method="POST" action="/listings">
+    <form method="POST" action="/listings" novalidate class="needs-validation">
       <div class="mg-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -11,7 +11,10 @@
           placeholder="Enter a Catchy Title"
           type="text"
           class="form-control"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please choose a Title.</div>
       </div>
       <br />
       <div class="mg-3">
@@ -20,7 +23,10 @@
           name="listing[description]"
           placeholder="Enter description about Place"
           class="form-control"
+          required
         ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a short description.</div>
       </div>
       <br />
       <div class="mg-3">
@@ -31,6 +37,7 @@
           type="text"
           class="form-control"
         />
+        <div class="invalid-feedback">Please give a valid image</div>
       </div>
       <br />
       <div class="row">
@@ -39,9 +46,11 @@
           <input
             name="listing[price]"
             placeholder="Enter price"
-            type="number"
             class="form-control"
+            required
           />
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please enter the price correctly.</div>
         </div>
         <div class="mg-3 col-md-8">
           <label for="country" class="form-label">Country</label>
@@ -50,7 +59,10 @@
             placeholder="Enter country"
             type="text"
             class="form-control"
+            required
           />
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please enter the country name.</div>
         </div>
       </div>
 
@@ -62,7 +74,10 @@
           placeholder="Enter Location"
           type="text"
           class="form-control"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a location .</div>
       </div>
       <br /><br />
       <button class="btn btn-dark add-btn mt-3">Add</button>
