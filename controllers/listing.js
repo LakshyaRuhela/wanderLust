@@ -2,7 +2,7 @@ const Listing = require("../models/listing");
 // const ExpressError = require("../utils/ExpressError"); .//
 // const { listingSchema } = require("../schema.js"); // in routes
 
-const Review = require("../models/review.js");
+
 
 //listings
 exports.allListings = async (req, res) => {
@@ -52,24 +52,4 @@ exports.deleteListing = async (req, res) => {
   res.redirect("/wanderlust/listings");
 };
 
-// review  POST
-exports.addReview = async (req, res) => {
-  let listing = await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.review); // for single pass all parameter
-  listing.reviews.push(newReview);
 
-  await newReview.save();
-  await listing.save();
-
-  res.redirect(`/wanderlust/listings/${req.params.id}`);
-};
-
-// delete review
-exports.deleteReview = async (req, res) => {
-  let { id, reviewId } = req.params;
-
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
-
-  res.redirect(`/wanderlust/listings/${req.params.id}`);
-};

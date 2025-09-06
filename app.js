@@ -16,12 +16,14 @@ app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "/public")));  
+app.use(express.static(path.join(__dirname, "/public")));
 
 // mounting route
 const listing = require("./routes/listing");
-app.use("/wanderlust", listing);
+const review = require("./routes/review");
+app.use("/wanderlust", listing , review);
 app.use("/", listing);
+// app.use("/wanderlust/listings", review);
 
 // db connection
 const dbConnect = require("./config/database");
