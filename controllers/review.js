@@ -10,7 +10,7 @@ exports.addReview = async (req, res) => {
 
   await newReview.save();
   await listing.save();
-
+  req.flash("success", "Review added successfully !!");
   res.redirect(`/wanderlust/listings/${req.params.id}`);
 };
 
@@ -20,6 +20,6 @@ exports.deleteReview = async (req, res) => {
 
   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
   await Review.findByIdAndDelete(reviewId);
-
+  req.flash("success", "Review Deleted successfully !!");
   res.redirect(`/wanderlust/listings/${req.params.id}`);
 };
