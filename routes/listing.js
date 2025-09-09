@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isLoggedIn } = require("../middleware");
 
 // joi
 const ExpressError = require("../utils/ExpressError");
@@ -14,7 +15,6 @@ const {
   edited,
   editedPut,
   deleteListing,
- 
 } = require("../controllers/listing");
 
 const validateSchema = (req, res, next) => {
@@ -28,21 +28,17 @@ const validateSchema = (req, res, next) => {
   }
 };
 
-
-
-
 //listing route
 router.get("/listings", wrapAsync(allListings));
 // create new listing
-router.get("/listings/new", wrapAsync(newListing));
-router.post("/listings", validateSchema, wrapAsync(newData));
+router.get("/listings/new", isLoggedIn, wrapAsync(newListing));
+router.post("/listings", isLoggedIn, validateSchema, wrapAsync(newData));
 //show route
 router.get("/listings/:id", wrapAsync(showListing));
 //edit
-router.get("/listings/:id/edit", wrapAsync(edited));
-router.put("/listings/:id", validateSchema, wrapAsync(editedPut));
+router.get("/listings/:id/edit", isLoggedIn, wrapAsync(edited));
+router.put("/listings/:id", isLoggedIn, validateSchema, wrapAsync(editedPut));
 //delete
-router.delete("/listings/:id", wrapAsync(deleteListing));
- 
+router.delete("/listings/:id", isLoggedIn, wrapAsync(deleteListing));
 
 module.exports = router;

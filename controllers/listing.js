@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+
 // const ExpressError = require("../utils/ExpressError"); .//
 // const { listingSchema } = require("../schema.js"); // in routes
 
@@ -10,23 +11,28 @@ exports.allListings = async (req, res) => {
 //show route ke
 exports.showListing = async (req, res) => {
   const { id } = req.params;
-  const listing = await Listing.findById(id).populate("reviews");
+  const listing = await Listing.findById(id)
+    .populate("reviews")
+    .populate("owner");
   if (!listing) {
     req.flash("error", "Listing you requested does not existed");
     res.redirect("/wanderlust/listings");
     return;
   }
+  //console.log(listing);
   res.render("listings/show.ejs", { listing });
 };
 
 // create new
 exports.newListing = async (req, res) => {
+  console.log(req.user);
   res.render("listings/new.ejs");
 };
 
 exports.newData = async (req, res, next) => {
   //fetch all details in {} next shown below
   const newListing = new Listing(req.body.listing);
+  newListing.owner = req.user._id; // adding owner in Show.ejs
   await newListing.save();
   console.log(newListing);
   req.flash("success", "New Listing created successfully !!");
@@ -37,7 +43,7 @@ exports.newData = async (req, res, next) => {
 exports.edited = async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
-  if(!listing){
+  if (!listing) {
     req.flash("error", "Listing you required does not exists !!");
     res.redirect("/wanderlust/listings");
     return;
