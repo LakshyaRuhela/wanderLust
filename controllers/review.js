@@ -6,6 +6,7 @@ exports.addReview = async (req, res) => {
   console.log(req.params.id);
   let listing = await Listing.findById(req.params.id);
   let newReview = new Review(req.body.review); // for single pass all parameter
+  newReview.author = req.user._id; // to fetch user data for new review
   listing.reviews.push(newReview);
 
   await newReview.save();

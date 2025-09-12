@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, isOwner } = require("../middleware");
 
 // joi
 const ExpressError = require("../utils/ExpressError");
@@ -17,6 +17,7 @@ const {
   deleteListing,
 } = require("../controllers/listing");
 
+// Can be simply shifted into middlewares
 const validateSchema = (req, res, next) => {
   let { error } = listingSchema.validate(req.body); // validate using joi
   console.log(error);
@@ -36,9 +37,15 @@ router.post("/listings", isLoggedIn, validateSchema, wrapAsync(newData));
 //show route
 router.get("/listings/:id", wrapAsync(showListing));
 //edit
-router.get("/listings/:id/edit", isLoggedIn, wrapAsync(edited));
-router.put("/listings/:id", isLoggedIn, validateSchema, wrapAsync(editedPut));
+router.get("/listings/:id/edit", isLoggedIn, isOwner, wrapAsync(edited));
+router.put(
+  "/listings/:id",
+  isLoggedIn,
+  isOwner,
+  validateSchema,
+  wrapAsync(editedPut)
+);
 //delete
-router.delete("/listings/:id", isLoggedIn, wrapAsync(deleteListing));
+router.delete("/listings/:id", isLoggedIn, isOwner, wrapAsync(deleteListing));
 
 module.exports = router;

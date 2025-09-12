@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-require("dotenv").config({ quiet: true });
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config({ quiet: true });
+}
 PORT = 3000 || process.env.PORT;
 const Listing = require("./models/listing");
 const path = require("path");
@@ -17,6 +19,7 @@ const User = require("./models/user");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
